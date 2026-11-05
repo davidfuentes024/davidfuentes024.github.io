@@ -2,7 +2,7 @@ import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
-// The same shape for real posts and for the fixtures used by the tests.
+// One folder per post: src/content/posts/<slug>/index.mdx
 const postSchema = ({ image }: SchemaContext) =>
   z
     .object({
@@ -19,23 +19,12 @@ const postSchema = ({ image }: SchemaContext) =>
       path: ["imageAlt"],
     });
 
-// One folder per post: <base>/<slug>/index.mdx
-const postLoader = (base: string) =>
-  glob({
-    pattern: "*/index.mdx",
-    base,
-    generateId: ({ entry }) => entry.split("/")[0],
-  });
-
 const posts = defineCollection({
-  loader: postLoader("./src/content/posts"),
-  schema: postSchema,
-});
-
-// Sample posts that only the tests read (npm test sets FIXTURE_POSTS). They live in
-// their own collection so this config never changes between dev, build and test.
-const fixtures = defineCollection({
-  loader: postLoader("./tests/fixtures/posts"),
+  loader: glob({
+    pattern: "*/index.mdx",
+    base: "./src/content/posts",
+    generateId: ({ entry }) => entry.split("/")[0],
+  }),
   schema: postSchema,
 });
 
@@ -62,4 +51,4 @@ const about = defineCollection({
   schema: z.object({}),
 });
 
-export const collections = { posts, fixtures, work, about };
+export const collections = { posts, work, about };

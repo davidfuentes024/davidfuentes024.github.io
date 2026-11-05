@@ -2,22 +2,6 @@
  * Site-wide content and settings. Edit values here; components only read them.
  * Fields marked TODO are placeholders to replace with real values.
  */
-export const themes = [
-  "burgundy",
-  "dragon",
-  "graphite",
-  "neon",
-  "nord",
-  "onedark",
-  "paper",
-] as const;
-export type ThemeName = (typeof themes)[number];
-
-// Pick a palette at build or dev time with SITE_THEME=<name> (see the dev:<name> scripts).
-const requested = process.env.SITE_THEME as ThemeName | undefined;
-export const activeTheme: ThemeName =
-  requested && themes.includes(requested) ? requested : "burgundy";
-
 export const site = {
   name: "David Fuentes",
   title: "David Fuentes",

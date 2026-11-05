@@ -1,14 +1,23 @@
-/*
- * Design tokens shared by every theme: type, space, layout and shape.
- * Colors live in src/styles/themes/<name>.css as light-dark(<light>, <dark>),
- * so the system preference applies by default and [data-theme] on <html>
- * overrides it. scripts/check-contrast.ts reads those files and enforces
- * the contrast thresholds.
- */
-@import "./themes/index.css";
-
+/* Design tokens: type, space, layout, shape and the burgundy palette as light-dark(<light>, <dark>).
+ * The system preference applies by default and [data-theme] on <html> overrides it. */
 :root {
   color-scheme: light dark;
+
+  --color-bg: light-dark(#fafafa, #111111);
+  --color-bg-alt: light-dark(#f0f0f0, #1a1a1a);
+  --color-heading: light-dark(#0a0a0a, #fafafa);
+  --color-text: light-dark(#262626, #e5e5e5);
+  --color-text-muted: light-dark(#484848, #b3b3b3);
+  --color-accent: light-dark(#8c1c3a, #e8607a);
+  --color-border: light-dark(#858585, #787878);
+  --color-focus: light-dark(#8c1c3a, #e8607a);
+  --color-code-comment: light-dark(#484848, #b3b3b3);
+  --color-code-keyword: light-dark(#6a1fa8, #cfa8f9);
+  --color-code-string: light-dark(#3c6b3a, #a7d98f);
+  --color-code-function: light-dark(#1f4f9a, #93b4f5);
+  --color-code-constant: light-dark(#9a3a2a, #f2a07b);
+  --color-code-parameter: light-dark(#7a5200, #e8c872);
+  --color-code-punctuation: light-dark(#484848, #b3b3b3);
 
   /* Code colors that follow the main text */
   --color-code-text: var(--color-text);

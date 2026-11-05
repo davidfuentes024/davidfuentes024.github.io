@@ -1,15 +1,13 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import { site } from "../site.config";
 
-export type Post = CollectionEntry<"posts"> | CollectionEntry<"fixtures">;
+export type Post = CollectionEntry<"posts">;
 
 export type MonthGroup = { month: number; label: string; posts: Post[] };
 export type YearGroup = { year: number; months: MonthGroup[] };
 
 export async function getPosts(): Promise<Post[]> {
-  // The test build reads fixture posts so the post template is covered without real posts.
-  const collection = process.env.FIXTURE_POSTS ? "fixtures" : "posts";
-  const posts: Post[] = await getCollection(collection, ({ data }) => !data.draft);
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
