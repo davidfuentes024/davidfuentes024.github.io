@@ -1,0 +1,18 @@
+/* The "paper" palette. light-dark(<light>, <dark>). */
+:root[data-palette="paper"] {
+  --color-bg: light-dark(#faf6ee, #1b1916);
+  --color-bg-alt: light-dark(#f1ebdd, #232019);
+  --color-heading: light-dark(#1a1814, #f1ece2);
+  --color-text: light-dark(#33302b, #d9d3c7);
+  --color-text-muted: light-dark(#50493f, #b6afa2);
+  --color-accent: light-dark(#9a3f22, #e29a7a);
+  --color-border: light-dark(#8a7f6d, #7d7568);
+  --color-focus: light-dark(#9a3f22, #e29a7a);
+  --color-code-comment: light-dark(#50493f, #b6afa2);
+  --color-code-keyword: light-dark(#7a3b6e, #d2a0c6);
+  --color-code-string: light-dark(#3f5a2a, #aac98f);
+  --color-code-function: light-dark(#2f5a73, #94bcd6);
+  --color-code-constant: light-dark(#a13a2b, #eaa08e);
+  --color-code-parameter: light-dark(#6b4a1a, #dcb97a);
+  --color-code-punctuation: light-dark(#50493f, #b6afa2);
+}

@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { features } from "../../site.config";
+
+if (!features.work) return Astro.rewrite("/404");
+
+const entries = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Work" description="Things I have built and run.">
+  <h1>Work</h1>
+  <ul>
+    {
+      entries.map((entry) => (
+        <li>
+          <a href={`/work/${entry.id}/`}>{entry.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  ul {
+    margin: 0;
+    padding-left: var(--space-4);
+  }
+
+  li {
+    min-height: var(--target-size);
+    padding-block: var(--space-1);
+  }
+
+  a {
+    color: var(--color-accent);
+  }
+
+  a:hover {
+    color: var(--color-text);
+  }
+</style>

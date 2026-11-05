@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import { render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { formatLongDate, getPosts, readingTime } from "../../utils/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, date, image, imageAlt } = post.data;
+---
+
+<Base title={title} description={description}>
+  <article>
+    <header>
+      <h1>{title}</h1>
+      <p class="small muted">
+        <time datetime={date.toISOString().slice(0, 10)}>{formatLongDate(date)}</time>
+        {" "}&middot; {readingTime(post.body)} min read
+      </p>
+      {
+        image && (
+          <Image class="framed-image cover" src={image} alt={imageAlt ?? ""} widths={[480, 960]} sizes="(min-width: 70ch) 70ch, 100vw" />
+        )
+      }
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<script>
+  import "../../scripts/code-copy";
+</script>
+
+<style>
+  .cover {
+    width: 100%;
+    aspect-ratio: var(--header-image-ratio);
+    object-fit: cover;
+    margin-bottom: var(--space-4);
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../site.config";
+---
+
+<button type="button" class="theme-toggle" data-storage-key={site.themeStorageKey} aria-label="Toggle color theme">
+  <span class="icon-sun"><Icon name="sun" /></span>
+  <span class="icon-moon"><Icon name="moon" /></span>
+</button>
+<noscript><style>.theme-toggle { display: none; }</style></noscript>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--target-size);
+    min-height: var(--target-size);
+    padding: 0;
+    color: var(--color-text);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-accent);
+  }
+
+  .theme-toggle span {
+    display: inline-flex;
+  }
+
+  /* Show the icon of the theme the button switches to. */
+  :global(:root[data-theme="dark"]) .icon-moon,
+  :global(:root[data-theme="light"]) .icon-sun {
+    display: none;
+  }
+</style>
+
+<script>
+  const query = matchMedia("(prefers-color-scheme: dark)");
+
+  const stored = (key: string) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  };
+
+  const apply = (theme: string) => {
+    document.documentElement.dataset.theme = theme;
+    const label = `Switch to ${theme === "dark" ? "light" : "dark"} theme`;
+    document.querySelector(".theme-toggle")?.setAttribute("aria-label", label);
+  };
+
+  // The footer is replaced on every page change, so bind again each time.
+  document.addEventListener("astro:page-load", () => {
+    const button = document.querySelector<HTMLButtonElement>(".theme-toggle");
+    const root = document.documentElement;
+    apply(root.dataset.theme ?? (query.matches ? "dark" : "light"));
+    button?.addEventListener("click", () => {
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      apply(next);
+      try {
+        localStorage.setItem(button.dataset.storageKey ?? "theme", next);
+      } catch {}
+    });
+  });
+
+  // Follow the system until the visitor makes an explicit choice.
+  query.addEventListener("change", (event) => {
+    const key = document.querySelector<HTMLButtonElement>(".theme-toggle")?.dataset.storageKey ?? "theme";
+    if (!stored(key)) apply(event.matches ? "dark" : "light");
+  });
+</script>

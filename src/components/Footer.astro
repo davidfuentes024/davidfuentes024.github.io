@@ -1,0 +1,70 @@
+---
+import Icon from "./Icon.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import DevThemePicker from "./DevThemePicker.astro";
+import { site, socials } from "../site.config";
+
+const links = socials.filter((social) => social.handle);
+---
+
+<footer class="footer">
+  <ul>
+    {
+      links.map((social) => (
+        <li>
+          <a href={social.href} aria-label={social.label}>
+            <Icon name={social.id} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="small muted">&copy; {new Date().getFullYear()} {site.name}</p>
+  <div class="tools">
+    <DevThemePicker />
+    <ThemeToggle />
+  </div>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-6);
+  }
+
+  ul {
+    display: flex;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    min-height: 2rem;
+  }
+
+  svg {
+    flex: none;
+  }
+
+  p {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-small);
+  }
+
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-left: auto;
+  }
+</style>

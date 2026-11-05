@@ -1,0 +1,18 @@
+/* Generated once from the "dragon" palette; edit freely. light-dark(<light>, <dark>). */
+:root[data-palette="dragon"] {
+  --color-bg: light-dark(#f7f6f5, #181716);
+  --color-bg-alt: light-dark(#eeecea, #1f1e1c);
+  --color-text: light-dark(#2f2b27, #d8d4cd);
+  --color-heading: light-dark(#151311, #f2efe9);
+  --color-text-muted: light-dark(#504942, #b2ada5);
+  --color-accent: light-dark(#5f4b24, #ccb079);
+  --color-border: light-dark(#887d72, #777771);
+  --color-focus: light-dark(#5f4b24, #ccb079);
+  --color-code-comment: light-dark(#504942, #b2ada5);
+  --color-code-keyword: light-dark(#574a58, #bbafbc);
+  --color-code-string: light-dark(#455334, #a7b98f);
+  --color-code-function: light-dark(#3e515a, #a2b6bf);
+  --color-code-constant: light-dark(#88322d, #e0a5a2);
+  --color-code-parameter: light-dark(#634837, #c9ae9d);
+  --color-code-punctuation: light-dark(#504942, #b2ada5);
+}

@@ -1,0 +1,58 @@
+---
+import { emptyWriting } from "../site.config";
+import { formatShortDate, groupByYearAndMonth, type Post } from "../utils/posts";
+
+const { posts } = Astro.props as { posts: Post[] };
+const years = groupByYearAndMonth(posts);
+---
+
+{posts.length === 0 && <p class="muted">{emptyWriting}</p>}
+{
+  years.map((year) => (
+    <section>
+      <h2>{year.year}</h2>
+      {year.months.map((month) => (
+        <div class="month">
+          <h3 class="muted">{month.label}</h3>
+          <ul>
+            {month.posts.map((post) => (
+              <li>
+                <time class="small muted" datetime={post.data.date.toISOString().slice(0, 10)}>
+                  {formatShortDate(post.data.date)}
+                </time>
+                <a href={`/writing/${post.id}/`}>{post.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  ))
+}
+
+<style>
+  h3 {
+    margin: var(--space-3) 0 var(--space-1);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-regular);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+    min-height: var(--target-size);
+  }
+
+  time {
+    flex: none;
+    min-width: 6ch;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

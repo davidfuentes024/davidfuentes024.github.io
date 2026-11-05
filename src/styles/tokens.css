@@ -1,0 +1,87 @@
+/*
+ * Design tokens shared by every theme: type, space, layout and shape.
+ * Colors live in src/styles/themes/<name>.css as light-dark(<light>, <dark>),
+ * so the system preference applies by default and [data-theme] on <html>
+ * overrides it. scripts/check-contrast.ts reads those files and enforces
+ * the contrast thresholds.
+ */
+@import "./themes/index.css";
+
+:root {
+  color-scheme: light dark;
+
+  /* Code colors that follow the main text */
+  --color-code-text: var(--color-text);
+
+  /* Shiki's css-variables theme reads these */
+  --astro-code-foreground: var(--color-code-text);
+  --astro-code-background: var(--color-bg-alt);
+  --astro-code-token-constant: var(--color-code-constant);
+  --astro-code-token-string: var(--color-code-string);
+  --astro-code-token-comment: var(--color-code-comment);
+  --astro-code-token-keyword: var(--color-code-keyword);
+  --astro-code-token-parameter: var(--color-code-parameter);
+  --astro-code-token-function: var(--color-code-function);
+  --astro-code-token-string-expression: var(--color-code-string);
+  --astro-code-token-punctuation: var(--color-code-punctuation);
+  --astro-code-token-link: var(--color-accent);
+
+  /* Typography */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "PT Serif", Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-size-base: 1rem;
+  --font-size-small: 0.875rem;
+  --font-size-name: 1rem;
+  --font-size-title: 0.9375rem;
+  --font-size-heading: 0.9375rem;
+  --line-height-body: 1.75;
+  --line-height-tight: 1.3;
+  --font-weight-regular: 400;
+  --font-weight-strong: 500;
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1.25rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 5rem;
+
+  /* Layout */
+  --measure: 38rem;
+  --sidebar-width: 12.5rem;
+  --column-gap: 2rem;
+  --page-width: calc(var(--sidebar-width) + var(--column-gap) + var(--measure));
+  --page-gutter: var(--space-5);
+  --target-size: 1.5rem;
+  --footer-bottom-space: var(--space-5);
+
+  /* Shape: square corners, no decorative borders */
+  --radius: 0;
+  --border-width: 1px;
+  --border: var(--border-width) solid var(--color-border);
+  --focus-ring: 2px solid var(--color-focus);
+
+  /* Images */
+  --header-image-ratio: 3 / 1;
+  --about-image-size: 9rem;
+
+  /* Motion */
+  --transition: 150ms ease;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition: 0s;
+  }
+}

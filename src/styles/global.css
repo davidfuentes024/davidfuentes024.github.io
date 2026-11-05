@@ -1,0 +1,309 @@
+/* Base styles and shared prose. Every value comes from the tokens. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border-radius: var(--radius);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-body);
+  /* Keeps light text on a dark background from looking heavier than it is */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page changes swap instantly instead of cross-fading */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/*
+ * Sidebar on the left spanning the full height; content and footer stacked on
+ * the right. The footer always rests --footer-bottom-space above the page end.
+ */
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  column-gap: var(--column-gap);
+  width: 100%;
+  max-width: calc(var(--page-width) + 2 * var(--page-gutter));
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: var(--space-7) var(--page-gutter) var(--footer-bottom-space);
+}
+
+.shell > .sidebar {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+.shell > .brand {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.shell > main {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.shell > .footer {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* The name is a small uppercase mark above the content, not a headline */
+.brand {
+  margin-bottom: var(--space-6);
+  font-size: var(--font-size-name);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: 0.05em;
+  line-height: var(--target-size);
+  text-transform: uppercase;
+}
+
+.brand a {
+  color: var(--color-heading);
+}
+
+.brand a:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 48rem) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr auto;
+    row-gap: var(--space-5);
+    padding-top: var(--space-5);
+  }
+
+  .brand {
+    margin-bottom: 0;
+  }
+
+  .shell > .sidebar,
+  .shell > .brand,
+  .shell > main,
+  .shell > .footer {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-strong);
+  line-height: var(--line-height-tight);
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+h1 {
+  font-size: var(--font-size-title);
+  margin: 0 0 var(--space-4);
+}
+
+h2 {
+  font-size: var(--font-size-heading);
+}
+
+h3,
+h4 {
+  font-size: var(--font-size-base);
+}
+
+p,
+ul,
+ol,
+blockquote,
+pre,
+figure,
+table {
+  margin: 0 0 var(--space-3);
+}
+
+/* Links keep the text color and turn accent on hover; only running text underlines them */
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+p a:hover,
+.prose a:hover {
+  color: var(--color-heading);
+}
+
+p,
+.prose :is(ul, ol) {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-base);
+}
+
+/* Links inside running text are underlined and take the accent color */
+p a,
+.prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.small {
+  font-size: var(--font-size-small);
+}
+
+.framed-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Markdown content */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose .anchor {
+  margin-left: var(--space-2);
+  text-decoration: none;
+  opacity: 0;
+}
+
+.prose :is(h2, h3, h4):hover .anchor,
+.prose .anchor:focus-visible {
+  opacity: 1;
+}
+
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.prose :is(ul, ol) {
+  padding-left: var(--space-4);
+}
+
+.prose li + li {
+  margin-top: var(--space-1);
+}
+
+.prose blockquote {
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.prose hr {
+  border: 0;
+  border-top: var(--border);
+  margin: var(--space-5) 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prose :is(th, td) {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+}
+
+.prose thead {
+  background: var(--color-bg-alt);
+}
+
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0 var(--space-1);
+  background: var(--color-bg-alt);
+}
+
+.prose pre {
+  padding: var(--space-3);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+}
+
+.prose pre code {
+  font-family: inherit;
+}
+
+.code-block {
+  margin: 0 0 var(--space-3);
+}
+
+.code-block pre {
+  margin: 0;
+}
+
+.code-copy {
+  display: block;
+  margin-left: auto;
+  min-height: var(--target-size);
+  padding: 0 var(--space-3);
+  font-family: inherit;
+  font-size: var(--font-size-small);
+  color: var(--color-text);
+  background: var(--color-bg-alt);
+  border: 0;
+  cursor: pointer;
+}
+
+.code-copy:hover {
+  color: var(--color-accent);
+}

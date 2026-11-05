@@ -1,0 +1,45 @@
+---
+// Development-only palette switcher. Renders nothing in production builds.
+import { themes } from "../site.config";
+const dev = import.meta.env.DEV;
+---
+
+{
+  dev && (
+    <label class="picker small muted">
+      <span class="visually-hidden">Palette (development only)</span>
+      <select>
+        {themes.map((name) => (
+          <option value={name}>{name}</option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
+<style>
+  select {
+    min-height: var(--target-size);
+    font: inherit;
+    font-size: var(--font-size-small);
+    color: var(--color-text);
+    background: var(--color-bg-alt);
+    border: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const select = document.querySelector<HTMLSelectElement>(".picker select");
+    if (!select) return;
+    const key = "dev-palette";
+    const root = document.documentElement;
+    const saved = sessionStorage.getItem(key);
+    if (saved) root.dataset.palette = saved;
+    select.value = root.dataset.palette ?? select.value;
+    select.addEventListener("change", () => {
+      root.dataset.palette = select.value;
+      sessionStorage.setItem(key, select.value);
+    });
+  });
+</script>

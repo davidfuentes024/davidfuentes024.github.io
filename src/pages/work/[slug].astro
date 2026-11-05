@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { features } from "../../site.config";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("work");
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+if (!features.work) return Astro.rewrite("/404");
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, href } = entry.data;
+---
+
+<Base title={title} description={description}>
+  <article>
+    <h1>{title}</h1>
+    <div class="prose">
+      <Content />
+    </div>
+    {href && <p><a href={href}>{href.replace(/^https?:\/\//, "")}</a></p>}
+  </article>
+</Base>

@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+import { getEntry, render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { about, socials } from "../site.config";
+
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/*.{jpeg,jpg,png,webp,svg}", { eager: true });
+const image = images[`/src/assets/${about.imageFile}`]?.default;
+const { Content } = await render((await getEntry("about", "index"))!);
+const links = socials.filter((social) => social.handle);
+---
+
+<Base title="About" description="About me.">
+  <h1>About</h1>
+  {image && <Image class="framed-image portrait" src={image} alt={about.imageAlt} width={480} height={480} />}
+  <div class="prose">
+    <Content />
+  </div>
+  <ul>
+    {
+      links.map((social) => (
+        <li>
+          <a href={social.href}>
+            <Icon name={social.id} />
+            <span>{social.handle}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  .portrait {
+    display: block;
+    margin-inline: auto; /* Centra la imagen horizontalmente */
+    width: var(--about-image-size);
+    height: var(--about-image-size);
+    object-fit: cover;
+    margin-bottom: var(--space-4);
+  }
+  
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--target-size);
+    overflow-wrap: anywhere;
+  }
+
+  a svg {
+    flex: none;
+  }
+</style>

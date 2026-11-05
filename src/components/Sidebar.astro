@@ -1,0 +1,100 @@
+---
+import { features, nav } from "../site.config";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href: string) => {
+  const section = href.replace(/\/$/, "");
+  return section === "" ? path === "" || path === "/" : path.startsWith(section);
+};
+
+const items = nav.filter((item) => !item.feature || features[item.feature]);
+---
+
+<aside class="sidebar">
+  <nav aria-label="Main">
+    <ul>
+      {
+        items.map((item) => {
+          const current = isCurrent(item.href);
+          return (
+            <li>
+              <a href={item.href} aria-current={current ? "page" : undefined}>
+                {current && <span class="dot" aria-hidden="true" />}
+                <span>{item.label}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+</aside>
+
+<style>
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-self: start;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-size);
+    color: var(--color-text);
+  }
+
+  nav a:hover {
+    color: var(--color-text-muted);
+  }
+
+  /* Only the selected section takes the accent color, with a dot beside it */
+  nav a[aria-current="page"] {
+    color: var(--color-accent);
+  }
+
+  .dot {
+    position: absolute;
+    right: 100%;
+    width: 4px;
+    height: 4px;
+    margin-right: var(--space-2);
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  @media (min-width: 48.01rem) {
+    .sidebar {
+      position: sticky;
+      top: var(--space-6);
+    }
+  }
+
+  @media (max-width: 48rem) {
+    nav ul {
+      flex-direction: row;
+      gap: var(--space-4);
+      margin-bottom: var(--space-2);
+    }
+
+    /* In a row there is no free margin to the left, so the dot sits below the label without changing the item width */
+    .dot {
+      top: 100%;
+      right: auto;
+      left: 50%;
+      margin: var(--space-1) 0 0;
+      transform: translateX(-50%);
+    }
+  }
+</style>
